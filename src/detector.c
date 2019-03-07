@@ -1284,7 +1284,7 @@ void test_detector(char *datacfg, char *cfgfile, char *weightfile, char *filenam
     FILE* json_file = NULL;
     if (outfile) {
         json_file = fopen(outfile, "wb");
-        char *tmp = "[\n";
+        char *tmp = "{\n\"results\":[\n";
         fwrite(tmp, sizeof(char), strlen(tmp), json_file);
     }
     int j;
@@ -1385,7 +1385,7 @@ void test_detector(char *datacfg, char *cfgfile, char *weightfile, char *filenam
     }
 
     if (outfile) {
-        char *tmp = "\n]";
+        char *tmp = "\n]\n}";
         fwrite(tmp, sizeof(char), strlen(tmp), json_file);
         fclose(json_file);
     }

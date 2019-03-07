@@ -1281,11 +1281,12 @@ void test_detector(char *datacfg, char *cfgfile, char *weightfile, char *filenam
     char *input = buff;
     char *json_buf = NULL;
     int json_image_id = 0;
-    FILE* json_file = NULL;
+    //FILE* json_file = NULL;
     if (outfile) {
-        json_file = fopen(outfile, "wb");
+      //json_file = fopen(outfile, "wb");
         char *tmp = "{\n\"results\":[\n";
-        fwrite(tmp, sizeof(char), strlen(tmp), json_file);
+        printf("%s", tmp);
+        //fwrite(tmp, sizeof(char), strlen(tmp), json_file);
     }
     int j;
     float nms = .45;    // 0.4F
@@ -1320,7 +1321,7 @@ void test_detector(char *datacfg, char *cfgfile, char *weightfile, char *filenam
         double time = get_time_point();
         network_predict(net, X);
         //network_predict_image(&net, im); letterbox = 1;
-        printf("%s: Predicted in %lf milli-seconds.\n", input, ((double)get_time_point() - time) / 1000);
+        //printf("%s: Predicted in %lf milli-seconds.\n", input, ((double)get_time_point() - time) / 1000);
         //printf("%s: Predicted in %f seconds.\n", input, (what_time_is_it_now()-time));
 
         int nboxes = 0;
@@ -1335,12 +1336,13 @@ void test_detector(char *datacfg, char *cfgfile, char *weightfile, char *filenam
         if (outfile) {
             if (json_buf) {
                 char *tmp = ", \n";
-                fwrite(tmp, sizeof(char), strlen(tmp), json_file);
+                printf("%s", tmp);
+                //fwrite(tmp, sizeof(char), strlen(tmp), json_file);
             }
             ++json_image_id;
             json_buf = detection_to_json(dets, nboxes, l.classes, names, json_image_id, input);
-
-            fwrite(json_buf, sizeof(char), strlen(json_buf), json_file);
+            printf("%s", json_buf);
+            //fwrite(json_buf, sizeof(char), strlen(json_buf), json_file);
             free(json_buf);
         }
 
@@ -1386,8 +1388,9 @@ void test_detector(char *datacfg, char *cfgfile, char *weightfile, char *filenam
 
     if (outfile) {
         char *tmp = "\n]\n}";
-        fwrite(tmp, sizeof(char), strlen(tmp), json_file);
-        fclose(json_file);
+        printf("%s", tmp);
+        //fwrite(tmp, sizeof(char), strlen(tmp), json_file);
+        //fclose(json_file);
     }
 
     // free memory

@@ -335,6 +335,7 @@ void draw_detections_v3(image im, detection *dets, int num, float thresh, char *
     for (i = 0; i < selected_detections_num; ++i) {
         const int best_class = selected_detections[i].best_class;
         //fprintf(stderr, "%s: %.0f%%", names[best_class],    selected_detections[i].det.prob[best_class] * 100);
+        /*
         if (ext_output)
           //fprintf(stderr, "\t(left_x: %4.0f   top_y: %4.0f   width: %4.0f   height: %4.0f)\n",
                 round((selected_detections[i].det.bbox.x - selected_detections[i].det.bbox.w / 2)*im.w),
@@ -342,6 +343,7 @@ void draw_detections_v3(image im, detection *dets, int num, float thresh, char *
                 round(selected_detections[i].det.bbox.w*im.w), round(selected_detections[i].det.bbox.h*im.h));
         else
           //fprintf(stderr, "\n");
+          */
         int j;
         for (j = 0; j < classes; ++j) {
             if (selected_detections[i].det.prob[j] > thresh && j != best_class) {

@@ -334,18 +334,18 @@ void draw_detections_v3(image im, detection *dets, int num, float thresh, char *
     int i;
     for (i = 0; i < selected_detections_num; ++i) {
         const int best_class = selected_detections[i].best_class;
-        fprintf(stderr, "%s: %.0f%%", names[best_class],    selected_detections[i].det.prob[best_class] * 100);
+        //fprintf(stderr, "%s: %.0f%%", names[best_class],    selected_detections[i].det.prob[best_class] * 100);
         if (ext_output)
-          fprintf(stderr, "\t(left_x: %4.0f   top_y: %4.0f   width: %4.0f   height: %4.0f)\n",
+          //fprintf(stderr, "\t(left_x: %4.0f   top_y: %4.0f   width: %4.0f   height: %4.0f)\n",
                 round((selected_detections[i].det.bbox.x - selected_detections[i].det.bbox.w / 2)*im.w),
                 round((selected_detections[i].det.bbox.y - selected_detections[i].det.bbox.h / 2)*im.h),
                 round(selected_detections[i].det.bbox.w*im.w), round(selected_detections[i].det.bbox.h*im.h));
         else
-          fprintf(stderr, "\n");
+          //fprintf(stderr, "\n");
         int j;
         for (j = 0; j < classes; ++j) {
             if (selected_detections[i].det.prob[j] > thresh && j != best_class) {
-              fprintf(stderr, "%s: %.0f%%\n", names[j], selected_detections[i].det.prob[j] * 100);
+              //fprintf(stderr, "%s: %.0f%%\n", names[j], selected_detections[i].det.prob[j] * 100);
             }
         }
     }
@@ -1068,7 +1068,7 @@ void show_image(image p, const char *name)
 #ifdef OPENCV
     show_image_cv(p, name);
 #else
-    fprintf(stderr, "Not compiled with OpenCV, saving to %s.png instead\n", name);
+    //fprintf(stderr, "Not compiled with OpenCV, saving to %s.png instead\n", name);
     save_image(p, name);
 #endif
 }
@@ -1103,7 +1103,7 @@ image load_image_cv(char *filename, int channels)
     else if (channels == 1) flag = 0;
     else if (channels == 3) flag = 1;
     else {
-        fprintf(stderr, "OpenCV can't force load with %d channels\n", channels);
+        //fprintf(stderr, "OpenCV can't force load with %d channels\n", channels);
     }
 
     if( (src = cvLoadImage(filename, flag)) == 0 )
@@ -1111,7 +1111,7 @@ image load_image_cv(char *filename, int channels)
         char shrinked_filename[1024];
         if (strlen(filename) >= 1024) sprintf(shrinked_filename, "name is too long");
         else sprintf(shrinked_filename, "%s", filename);
-        fprintf(stderr, "Cannot load image \"%s\"\n", shrinked_filename);
+        //fprintf(stderr, "Cannot load image \"%s\"\n", shrinked_filename);
         FILE* fw = fopen("bad.list", "a");
         fwrite(shrinked_filename, sizeof(char), strlen(shrinked_filename), fw);
         char *new_line = "\n";
@@ -1269,7 +1269,7 @@ void save_image_png(image im, const char *name)
     }
     int success = stbi_write_png(buff, im.w, im.h, im.c, data, im.w*im.c);
     free(data);
-    if(!success) fprintf(stderr, "Failed to write image %s\n", buff);
+    //if(!success) fprintf(stderr, "Failed to write image %s\n", buff);
 }
 
 void save_image_options(image im, const char *name, IMTYPE f, int quality)
@@ -1294,7 +1294,7 @@ void save_image_options(image im, const char *name, IMTYPE f, int quality)
     else if (f == TGA) success = stbi_write_tga(buff, im.w, im.h, im.c, data);
     else if (f == JPG) success = stbi_write_jpg(buff, im.w, im.h, im.c, data, quality);
     free(data);
-    if (!success) fprintf(stderr, "Failed to write image %s\n", buff);
+    //if (!success) fprintf(stderr, "Failed to write image %s\n", buff);
 }
 
 void save_image(image im, const char *name)
@@ -1960,7 +1960,7 @@ image load_image_stb(char *filename, int channels)
         char shrinked_filename[1024];
         if (strlen(filename) >= 1024) sprintf(shrinked_filename, "name is too long");
         else sprintf(shrinked_filename, "%s", filename);
-        fprintf(stderr, "Cannot load image \"%s\"\nSTB Reason: %s\n", shrinked_filename, stbi_failure_reason());
+        //fprintf(stderr, "Cannot load image \"%s\"\nSTB Reason: %s\n", shrinked_filename, stbi_failure_reason());
         FILE* fw = fopen("bad.list", "a");
         fwrite(shrinked_filename, sizeof(char), strlen(shrinked_filename), fw);
         char *new_line = "\n";

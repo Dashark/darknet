@@ -157,17 +157,22 @@ void train_classifier(char *datacfg, char *cfgfile, char *weightfile, int *gpus,
         int calc_topk_for_each = iter_topk + 2 * train_images_num / (net.batch * net.subdivisions);  // calculate TOPk for each 2 Epochs
         calc_topk_for_each = fmax(calc_topk_for_each, net.burn_in);
         calc_topk_for_each = fmax(calc_topk_for_each, 1000);
-        if (i % 10 == 0) {
+        /*
+		if (i % 10 == 0) {
             if (calc_topk) {
                 fprintf(stderr, "\n (next TOP5 calculation at %d iterations) ", calc_topk_for_each);
                 if (topk > 0) fprintf(stderr, " Last accuracy TOP5 = %2.2f %% \n", topk * 100);
             }
-
+            
             if (net.cudnn_half) {
+				
                 if (i < net.burn_in * 3) fprintf(stderr, " Tensor Cores are disabled until the first %d iterations are reached.\n", 3 * net.burn_in);
                 else fprintf(stderr, " Tensor Cores are used.\n");
+				
             }
+			
         }
+		*/
 
         int draw_precision = 0;
         if (calc_topk && (i >= calc_topk_for_each || i == net.max_batches)) {
@@ -912,7 +917,7 @@ void test_classifier(char *datacfg, char *cfgfile, char *weightfile, int target_
             if (curr + net.batch > m) args.n = m - curr;
             load_thread = load_data_in_thread(args);
         }
-        fprintf(stderr, "Loaded: %d images in %lf seconds\n", val.X.rows, sec(clock()-time));
+        //fprintf(stderr, "Loaded: %d images in %lf seconds\n", val.X.rows, sec(clock()-time));
 
         time=clock();
         matrix pred = network_predict_data(net, val);
@@ -932,7 +937,7 @@ void test_classifier(char *datacfg, char *cfgfile, char *weightfile, int target_
 
         free_matrix(pred);
 
-        fprintf(stderr, "%lf seconds, %d images, %d total\n", sec(clock()-time), val.X.rows, curr);
+        //fprintf(stderr, "%lf seconds, %d images, %d total\n", sec(clock()-time), val.X.rows, curr);
         free_data(val);
     }
 }
@@ -1242,7 +1247,7 @@ void demo_classifier(char *datacfg, char *cfgfile, char *weightfile, int cam_ind
 void run_classifier(int argc, char **argv)
 {
     if(argc < 4){
-        fprintf(stderr, "usage: %s %s [train/test/valid] [cfg] [weights (optional)]\n", argv[0], argv[1]);
+        //fprintf(stderr, "usage: %s %s [train/test/valid] [cfg] [weights (optional)]\n", argv[0], argv[1]);
         return;
     }
 

@@ -629,7 +629,7 @@ learning_rate_policy get_policy(char *s)
     if (strcmp(s, "exp")==0) return EXP;
     if (strcmp(s, "sigmoid")==0) return SIG;
     if (strcmp(s, "steps")==0) return STEPS;
-    fprintf(stderr, "Couldn't find policy %s, going with constant\n", s);
+    //fprintf(stderr, "Couldn't find policy %s, going with constant\n", s);
     return CONSTANT;
 }
 
@@ -680,9 +680,9 @@ void parse_net_options(list *options, network *net)
         int compute_capability = get_gpu_compute_capability(net->gpu_index);
         if (get_gpu_compute_capability(net->gpu_index) >= 700) net->cudnn_half = 1;
         else net->cudnn_half = 0;
-        fprintf(stderr, " compute_capability = %d, cudnn_half = %d \n", compute_capability, net->cudnn_half);
+        //fprintf(stderr, " compute_capability = %d, cudnn_half = %d \n", compute_capability, net->cudnn_half);
     }
-    else fprintf(stderr, " GPU isn't used \n");
+    else //fprintf(stderr, " GPU isn't used \n");
 #endif
     if(net->policy == STEP){
         net->step = option_find_int(options, "step", 1);
@@ -765,10 +765,10 @@ network parse_network_cfg_custom(char *filename, int batch, int time_steps)
     n = n->next;
     int count = 0;
     free_section(s);
-    fprintf(stderr, "layer     filters    size              input                output\n");
+    //fprintf(stderr, "layer     filters    size              input                output\n");
     while(n){
         params.index = count;
-        fprintf(stderr, "%4d ", count);
+        //fprintf(stderr, "%4d ", count);
         s = (section *)n->val;
         options = s->options;
         layer l = { (LAYER_TYPE)0 };
@@ -833,7 +833,7 @@ network parse_network_cfg_custom(char *filename, int batch, int time_steps)
             l.delta_gpu = net.layers[count-1].delta_gpu;
 #endif
         }else{
-            fprintf(stderr, "Type not recognized: %s\n", s->type);
+            //fprintf(stderr, "Type not recognized: %s\n", s->type);
         }
         l.onlyforward = option_find_int_quiet(options, "onlyforward", 0);
         l.stopbackward = option_find_int_quiet(options, "stopbackward", 0);
@@ -859,7 +859,7 @@ network parse_network_cfg_custom(char *filename, int batch, int time_steps)
     free_list(sections);
     net.outputs = get_network_output_size(net);
     net.output = get_network_output(net);
-    fprintf(stderr, "Total BFLOPS %5.3f \n", bflops);
+    //fprintf(stderr, "Total BFLOPS %5.3f \n", bflops);
 #ifdef GPU
     get_cuda_stream();
     get_cuda_memcpy_stream();
@@ -881,7 +881,7 @@ network parse_network_cfg_custom(char *filename, int batch, int time_steps)
             CHECK_CUDA(cudaMalloc((void **)net.output16_gpu, *net.max_output16_size * sizeof(short))); //sizeof(half)
         }
         if (workspace_size) {
-            fprintf(stderr, " Allocate additional workspace_size = %1.2f MB \n", (float)workspace_size/1000000);
+            //fprintf(stderr, " Allocate additional workspace_size = %1.2f MB \n", (float)workspace_size/1000000);
             net.workspace = cuda_make_array(0, workspace_size / sizeof(float) + 1);
         }
         else {
@@ -929,7 +929,7 @@ list *read_cfg(char *filename)
                 break;
             default:
                 if(!read_option(line, current->options)){
-                    fprintf(stderr, "Config file error line %d, could parse: %s\n", nu, line);
+                    //fprintf(stderr, "Config file error line %d, could parse: %s\n", nu, line);
                     free(line);
                 }
                 break;
@@ -1031,7 +1031,7 @@ void save_weights_upto(network net, char *filename, int cutoff)
         cuda_set_device(net.gpu_index);
     }
 #endif
-    fprintf(stderr, "Saving weights to %s\n", filename);
+    //fprintf(stderr, "Saving weights to %s\n", filename);
     FILE *fp = fopen(filename, "wb");
     if(!fp) file_error(filename);
 
@@ -1228,7 +1228,7 @@ void load_weights_upto(network *net, char *filename, int cutoff)
         cuda_set_device(net->gpu_index);
     }
 #endif
-    fprintf(stderr, "Loading weights from %s...", filename);
+    //fprintf(stderr, "Loading weights from %s...", filename);
     fflush(stdout);
     FILE *fp = fopen(filename, "rb");
     if(!fp) file_error(filename);
@@ -1240,13 +1240,13 @@ void load_weights_upto(network *net, char *filename, int cutoff)
     fread(&minor, sizeof(int), 1, fp);
     fread(&revision, sizeof(int), 1, fp);
     if ((major * 10 + minor) >= 2) {
-      fprintf(stderr, "\n seen 64 \n");
+      //fprintf(stderr, "\n seen 64 \n");
         uint64_t iseen = 0;
         fread(&iseen, sizeof(uint64_t), 1, fp);
         *net->seen = iseen;
     }
     else {
-      fprintf(stderr, "\n seen 32 \n");
+      //fprintf(stderr, "\n seen 32 \n");
         uint32_t iseen = 0;
         fread(&iseen, sizeof(uint32_t), 1, fp);
         *net->seen = iseen;
@@ -1306,7 +1306,7 @@ void load_weights_upto(network *net, char *filename, int cutoff)
 #endif
         }
     }
-    fprintf(stderr, "Done!\n");
+    //fprintf(stderr, "Done!\n");
     fclose(fp);
 }
 

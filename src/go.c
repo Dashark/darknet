@@ -387,9 +387,11 @@ int generate_move(network net, int player, float *board, int multi, float thresh
             if (!move[indexes[i]]) indexes[i] = -1;
         }
         print_board(board, player, indexes);
+		/*
         for(i = 0; i < n_ind; ++i){
             fprintf(stderr, "%d: %f\n", i+1, move[indexes[i]]);
         }
+		*/
     }
 
     if(suicide_go(board, player, row, col)){
@@ -519,7 +521,7 @@ void engine_go(char *filename, char *weightfile, int multi)
             if(c >= 'a' && c <= 'z') c = c - 'a';
             if(c >= 8) --c;
             r = 19 - r;
-            fprintf(stderr, "move: %d %d\n", r, c);
+            //fprintf(stderr, "move: %d %d\n", r, c);
 
             char *swap = two;
             two = one;
@@ -559,7 +561,7 @@ void engine_go(char *filename, char *weightfile, int multi)
         } else if (!strcmp(buff, "final_status_list")){
             char type[256];
             scanf("%s", type);
-            fprintf(stderr, "final_status\n");
+            //fprintf(stderr, "final_status\n");
             char *line = fgetl(stdin);
             free(line);
             if(type[0] == 'd' || type[0] == 'D'){
@@ -731,7 +733,7 @@ float score_game(float *board)
     float score = 0;
     char player = 0;
     while((l = fgetl(p))){
-        fprintf(stderr, "%s  \t", l);
+        //fprintf(stderr, "%s  \t", l);
         int n = sscanf(l, "= %c+%f", &player, &score);
         free(l);
         if (n == 2) break;
@@ -779,7 +781,7 @@ void self_go(char *filename, char *weightfile, char *f2, char *w2, int multi)
             if((score > 0) == (total%2==0)) ++p1;
             else ++p2;
             ++total;
-            fprintf(stderr, "Total: %d, Player 1: %f, Player 2: %f\n", total, (float)p1/total, (float)p2/total);
+            //fprintf(stderr, "Total: %d, Player 1: %f, Player 2: %f\n", total, (float)p1/total, (float)p2/total);
             int j;
             for(; i < count; i += 2){
                 for(j = 0; j < 93; ++j){
@@ -827,7 +829,7 @@ void run_go(int argc, char **argv)
 {
     //boards_go();
     if(argc < 4){
-        fprintf(stderr, "usage: %s %s [train/test/valid] [cfg] [weights (optional)]\n", argv[0], argv[1]);
+        //fprintf(stderr, "usage: %s %s [train/test/valid] [cfg] [weights (optional)]\n", argv[0], argv[1]);
         return;
     }
 

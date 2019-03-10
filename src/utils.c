@@ -284,13 +284,13 @@ void error(const char *s)
 
 void malloc_error()
 {
-    fprintf(stderr, "Malloc error\n");
+    //fprintf(stderr, "Malloc error\n");
     exit(EXIT_FAILURE);
 }
 
 void file_error(char *s)
 {
-    fprintf(stderr, "Couldn't open file: %s\n", s);
+    //fprintf(stderr, "Couldn't open file: %s\n", s);
     exit(EXIT_FAILURE);
 }
 

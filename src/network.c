@@ -118,7 +118,7 @@ float get_current_rate(network net)
         case SIG:
             return net.learning_rate * (1./(1.+exp(net.gamma*(batch_num - net.step))));
         default:
-            fprintf(stderr, "Policy is weird!\n");
+            //fprintf(stderr, "Policy is weird!\n");
             return net.learning_rate;
     }
 }
@@ -478,7 +478,7 @@ int resize_network(network *net, int w, int h)
         }else if(l.type == COST){
             resize_cost_layer(&l, inputs);
         }else{
-            fprintf(stderr, "Resizing type %d \n", (int)l.type);
+            //fprintf(stderr, "Resizing type %d \n", (int)l.type);
             error("Cannot resize this type of layer");
         }
         if(l.workspace_size > workspace_size) workspace_size = l.workspace_size;
@@ -536,7 +536,7 @@ detection_layer get_network_detection_layer(network net)
             return net.layers[i];
         }
     }
-    fprintf(stderr, "Detection layer not found!!\n");
+    //fprintf(stderr, "Detection layer not found!!\n");
     detection_layer l = { (LAYER_TYPE)0 };
     return l;
 }
@@ -844,11 +844,11 @@ void print_network(network net)
         int n = l.outputs;
         float mean = mean_array(output, n);
         float vari = variance_array(output, n);
-        fprintf(stderr, "Layer %d - Mean: %f, Variance: %f\n",i,mean, vari);
+        //fprintf(stderr, "Layer %d - Mean: %f, Variance: %f\n",i,mean, vari);
         if(n > 100) n = 100;
-        for(j = 0; j < n; ++j) fprintf(stderr, "%f, ", output[j]);
-        if(n == 100)fprintf(stderr,".....\n");
-        fprintf(stderr, "\n");
+        //for(j = 0; j < n; ++j) fprintf(stderr, "%f, ", output[j]);
+        //if(n == 100)fprintf(stderr,".....\n");
+        //fprintf(stderr, "\n");
     }
 }
 

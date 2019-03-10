@@ -271,11 +271,12 @@ void train_detector(char *datacfg, char *cfgfile, char *weightfile, int *gpus, i
             printf("\n (next mAP calculation at %d iterations) ", next_map_calc);
             if (mean_average_precision > 0) printf("\n Last accuracy mAP@0.5 = %2.2f %% ", mean_average_precision * 100);
         }
-
+        /*
         if (net.cudnn_half) {
             if (i < net.burn_in * 3) fprintf(stderr, "\n Tensor Cores are disabled until the first %d iterations are reached.", 3 * net.burn_in);
             else fprintf(stderr, "\n Tensor Cores are used.");
         }
+		*/
         printf("\n %d: %f, %f avg loss, %f rate, %lf seconds, %d images\n", get_current_batch(net), loss, avg_loss, get_current_rate(net), (what_time_is_it_now() - time), i*imgs);
 
         int draw_precision = 0;
@@ -460,7 +461,7 @@ void validate_detector(char *datacfg, char *cfgfile, char *weightfile, char *out
         load_weights(&net, weightfile);
     }
     //set_batch_network(&net, 1);
-    fprintf(stderr, "Learning Rate: %g, Momentum: %g, Decay: %g\n", net.learning_rate, net.momentum, net.decay);
+    //fprintf(stderr, "Learning Rate: %g, Momentum: %g, Decay: %g\n", net.learning_rate, net.momentum, net.decay);
     srand(time(0));
 
     list *plist = get_paths(valid_images);
@@ -529,7 +530,7 @@ void validate_detector(char *datacfg, char *cfgfile, char *weightfile, char *out
     }
     time_t start = time(0);
     for (i = nthreads; i < m + nthreads; i += nthreads) {
-        fprintf(stderr, "%d\n", i);
+        //fprintf(stderr, "%d\n", i);
         for (t = 0; t < nthreads && i + t - nthreads < m; ++t) {
             pthread_join(thr[t], 0);
             val[t] = buf[t];
@@ -575,7 +576,7 @@ void validate_detector(char *datacfg, char *cfgfile, char *weightfile, char *out
         fprintf(fp, "\n]\n");
         fclose(fp);
     }
-    fprintf(stderr, "Total Detection Time: %f Seconds\n", (double)time(0) - start);
+    //fprintf(stderr, "Total Detection Time: %f Seconds\n", (double)time(0) - start);
 }
 
 void validate_detector_recall(char *datacfg, char *cfgfile, char *weightfile)
@@ -647,7 +648,7 @@ void validate_detector_recall(char *datacfg, char *cfgfile, char *weightfile)
             }
         }
         //fprintf(stderr, " %s - %s - ", paths[i], labelpath);
-        fprintf(stderr, "%5d %5d %5d\tRPs/Img: %.2f\tIOU: %.2f%%\tRecall:%.2f%%\n", i, correct, total, (float)proposals / (i + 1), avg_iou * 100 / total, 100.*correct / total);
+        //fprintf(stderr, "%5d %5d %5d\tRPs/Img: %.2f\tIOU: %.2f%%\tRecall:%.2f%%\n", i, correct, total, (float)proposals / (i + 1), avg_iou * 100 / total, 100.*correct / total);
         free(id);
         free_image(orig);
         free_image(sized);
@@ -760,7 +761,7 @@ float validate_detector_map(char *datacfg, char *cfgfile, char *weightfile, floa
     }
     time_t start = time(0);
     for (i = nthreads; i < m + nthreads; i += nthreads) {
-        fprintf(stderr, "\r%d", i);
+        //fprintf(stderr, "\r%d", i);
         for (t = 0; t < nthreads && i + t - nthreads < m; ++t) {
             pthread_join(thr[t], 0);
             val[t] = buf[t];
@@ -1015,7 +1016,7 @@ float validate_detector_map(char *datacfg, char *cfgfile, char *weightfile, floa
     free(detections);
     free(truth_classes_count);
 
-    fprintf(stderr, "Total Detection Time: %f Seconds\n", (double)(time(0) - start));
+    //fprintf(stderr, "Total Detection Time: %f Seconds\n", (double)(time(0) - start));
     if (reinforcement_fd != NULL) fclose(reinforcement_fd);
 
     // free memory
@@ -1435,7 +1436,7 @@ void run_detector(int argc, char **argv)
     int ext_output = find_arg(argc, argv, "-ext_output");
     int save_labels = find_arg(argc, argv, "-save_labels");
     if (argc < 4) {
-        fprintf(stderr, "usage: %s %s [train/test/valid/demo/map] [data] [cfg] [weights (optional)]\n", argv[0], argv[1]);
+        //fprintf(stderr, "usage: %s %s [train/test/valid/demo/map] [data] [cfg] [weights (optional)]\n", argv[0], argv[1]);
         return;
     }
     char *gpu_list = find_char_arg(argc, argv, "-gpus", 0);

@@ -209,7 +209,7 @@ float *cuda_make_array(float *x, size_t n)
     float *x_gpu;
     size_t size = sizeof(float)*n;
     cudaError_t status = cudaMalloc((void **)&x_gpu, size);
-    if (status != cudaSuccess) fprintf(stderr, " Try to set subdivisions=64 in your cfg-file. \n");
+    if (status != cudaSuccess) //fprintf(stderr, " Try to set subdivisions=64 in your cfg-file. \n");
     CHECK_CUDA(status);
     if(x){
         //status = cudaMemcpy(x_gpu, x, size, cudaMemcpyHostToDevice);
@@ -252,7 +252,7 @@ int *cuda_make_int_array(size_t n)
     int *x_gpu;
     size_t size = sizeof(int)*n;
     cudaError_t status = cudaMalloc((void **)&x_gpu, size);
-    if(status != cudaSuccess) fprintf(stderr, " Try to set subdivisions=64 in your cfg-file. \n");
+    if(status != cudaSuccess) //fprintf(stderr, " Try to set subdivisions=64 in your cfg-file. \n");
     CHECK_CUDA(status);
     return x_gpu;
 }
